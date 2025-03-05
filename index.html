@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chamador de Senhas</title>
     <style>
+        /* Estilo para o logo */
         .logo { 
             text-align: center; 
             margin: 20px; 
@@ -15,30 +16,98 @@
             display: block;
             margin: auto;
         }
+
+        /* Estilo para o corpo da página */
         body {
             font-family: Arial, sans-serif;
             display: flex;
-            flex-direction: column; /* Alinha os itens verticalmente */
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: 'white';
+            background-color: white;
             margin: 0;
         }
+
+        /* Estilo para o quadrado do título "PADARIA" e "BALCÃO 1" */
+        #balcao {
+            background-color: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        #balcao h1 {
+            font-size: 2.5rem;
+            color: #333;
+            margin: 0;
+        }
+
+        #balcao h2 {
+            font-size: 2rem;
+            color: #666;
+            margin: 0;
+        }
+
+        /* Estilo para o quadrado do contador e título "SENHA" */
+        #senha-container {
+            background-color: #007bff;
+            border: 2px solid #0056b3;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+
+        #senha-container h1 {
+            font-size: 2rem;
+            margin: 0 0 10px 0;
+        }
+
         #contador {
             font-size: 30rem;
             font-weight: bold;
-            color: #333;
+            margin: 0;
+            line-height: 1; /* Ajusta o alinhamento vertical do número */
+        }
+
+        /* Estilo para a animação de piscar */
+        .piscar {
+            animation: piscar 0.5s linear infinite;
+        }
+
+        @keyframes piscar {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
         }
     </style>
 </head>
 <body>
+    <!-- Logo -->
     <div class="logo">
         <img src="media/mt.jpg" class="img-mt">
     </div>
-    <div id="contador">0</div>
+
+    <!-- Título "PADARIA" e "BALCÃO 1" -->
+    <div id="balcao">
+        <h1>PADARIA</h1>
+        <h2>BALCÃO 1</h2>
+    </div>
+
+    <!-- Contador e título "SENHA" -->
+    <div id="senha-container">
+        <h1>SENHA:</h1>
+        <div id="contador">0</div>
+    </div>
+
+    <!-- Áudios -->
     <audio id="alertaAudio" src="media/alerta.mp3"></audio>
     <audio id="senhaAudio" src="media/senha.mp3"></audio>
+
     <script>
         const contadorElement = document.getElementById("contador");
 
@@ -48,7 +117,7 @@
                 const response = await fetch("http://192.168.0.3:8221/demo_queue/estado.php");
                 const data = await response.json();
 
-                //Armazena valor atual do contador 
+                // Armazena valor atual do contador 
                 var contador = parseInt(document.getElementById("contador").innerHTML, 10);
 
                 // Atualiza o contador
@@ -58,21 +127,19 @@
                 if (data.piscar) { 
                     contadorElement.classList.add("piscar"); 
 
-                    // toca musiquinha de alerta
+                    // Toca musiquinha de alerta
                     const audio = document.getElementById("alertaAudio");
-
                     audio.play(); // Inicia a reprodução
 
                     setTimeout(() => { 
                         contadorElement.classList.remove("piscar"); 
                         document.body.style.backgroundColor = document.body.style.backgroundColor === 'yellow' ? 'white' : 'yellow'; 
-                    }, 1000); // Para de piscar após 1 segundos
+                    }, 1000); // Para de piscar após 1 segundo
                 } else if (data.contador != contador) {
-                    // toca a musiquinha de senha
+                    // Toca a musiquinha de senha
                     const som = document.getElementById("senhaAudio");
                     som.play();
-                } 
-                else {
+                } else {
                     document.body.style.backgroundColor = 'white';
                 }
 
@@ -80,6 +147,8 @@
                 console.error("Erro ao buscar o estado:", error);
             }
         }
+
+        // Atualiza o contador a cada segundo
         setInterval(atualizarContador, 1000);
     </script>
 </body>
