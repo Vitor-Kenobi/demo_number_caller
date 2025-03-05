@@ -3,7 +3,7 @@
 if (file_exists("estado.txt")) {
     $estado = json_decode(file_get_contents("estado.txt"), true);
 } else {
-    $estado = ["contador" => 0, "piscar" => false];
+    $estado = ["contador" => 0];
 }
 
 // Retorna o estado como JSON

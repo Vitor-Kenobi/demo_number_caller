@@ -19,13 +19,6 @@
             font-weight: bold;
             color: #333;
         }
-        .piscar {
-            animation: piscar 0.5s linear infinite;
-        }
-        @keyframes piscar {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
     </style>
 </head>
 <body>
@@ -37,19 +30,11 @@
         // Função para buscar o estado do contador
         async function atualizarContador() {
             try {
-                const response = await fetch("http://192.168.0.3:8221/estado.php");
+                const response = await fetch("http://192.168.0.3:8221/demo_queue/estado.php");
                 const data = await response.json();
 
                 // Atualiza o contador
                 contadorElement.textContent = data.contador;
-
-                // Controla a animação de piscar
-                if (data.piscar) {
-                    contadorElement.classList.add("piscar");
-                    setTimeout(() => {
-                        contadorElement.classList.remove("piscar");
-                    }, 1000);  // Para de piscar após 1 segundo
-                }
             } catch (error) {
                 console.error("Erro ao buscar o estado:", error);
             }
