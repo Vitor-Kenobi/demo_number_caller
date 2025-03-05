@@ -38,6 +38,7 @@
     </div>
     <div id="contador">0</div>
     <audio id="alertaAudio" src="media/alerta.mp3"></audio>
+    <audio id="senhaAudio" src="media/senha.mp3"></audio>
     <script>
         const contadorElement = document.getElementById("contador");
 
@@ -47,22 +48,31 @@
                 const response = await fetch("http://192.168.0.3:8221/demo_queue/estado.php");
                 const data = await response.json();
 
+                //Armazena valor atual do contador 
+                var contador = parseInt(document.getElementById("contador").innerHTML, 10);
+
                 // Atualiza o contador
                 contadorElement.textContent = data.contador;
 
-                // Controla a animação de piscar
+                // Controla a animação de piscar e áudio
                 if (data.piscar) { 
                     contadorElement.classList.add("piscar"); 
 
-                    // toca musiquinha
+                    // toca musiquinha de alerta
                     const audio = document.getElementById("alertaAudio");
+
                     audio.play(); // Inicia a reprodução
 
                     setTimeout(() => { 
                         contadorElement.classList.remove("piscar"); 
                         document.body.style.backgroundColor = document.body.style.backgroundColor === 'yellow' ? 'white' : 'yellow'; 
                     }, 1000); // Para de piscar após 1 segundos
-                } else {
+                } else if (data.contador != contador) {
+                    // toca a musiquinha de senha
+                    const som = document.getElementById("senhaAudio");
+                    som.play();
+                } 
+                else {
                     document.body.style.backgroundColor = 'white';
                 }
 
@@ -70,9 +80,7 @@
                 console.error("Erro ao buscar o estado:", error);
             }
         }
-
-        // Atualiza o contador a cada segundo
-        setInterval(atualizarContador, 1500);
+        setInterval(atualizarContador, 1000);
     </script>
 </body>
 </html>
