@@ -7,14 +7,20 @@ if (isset($_POST["acao"])) {
     if (file_exists("estado.txt")) {
         $estado = json_decode(file_get_contents("estado.txt"), true);
     } else {
-        $estado = ["contador" => 0];
+        $estado = ["contador" => 0, "piscar" => false];
     }
 
-    // Atualiza o contador com base na ação
+    // Atualiza o contador e a flag de piscar com base na ação
     if ($acao === 1) {  // Incrementar
         $estado["contador"]++;
+        $estado["piscar"] = false;  // Reseta a flag de piscar
     } elseif ($acao === 2) {  // Decrementar
-        $estado["contador"]--;
+        if ($estado ["contador"] >= 0) {
+            $estado["contador"]--;
+            $estado["piscar"] = false;  // Reseta a flag de piscar
+        }
+    } elseif ($acao === 3) {  // Piscar
+        $estado["piscar"] = true;
     }
 
     // Salva o estado em um arquivo temporário
