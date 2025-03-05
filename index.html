@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chamador de Senhas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        #contador {
+            font-size: 10rem;
+            font-weight: bold;
+            color: #333;
+        }
+        .piscar {
+            animation: piscar 0.5s linear infinite;
+        }
+        @keyframes piscar {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div id="contador">0</div>
+
+    <script>
+        const contadorElement = document.getElementById("contador");
+
+        // Função para buscar o estado do contador
+        async function atualizarContador() {
+            try {
+                const response = await fetch("http://192.168.0.3:8221/estado.php");
+                const data = await response.json();
+
+                // Atualiza o contador
+                contadorElement.textContent = data.contador;
+
+                // Controla a animação de piscar
+                if (data.piscar) {
+                    contadorElement.classList.add("piscar");
+                    setTimeout(() => {
+                        contadorElement.classList.remove("piscar");
+                    }, 1000);  // Para de piscar após 1 segundo
+                }
+            } catch (error) {
+                console.error("Erro ao buscar o estado:", error);
+            }
+        }
+
+        // Atualiza o contador a cada segundo
+        setInterval(atualizarContador, 1000);
+    </script>
+</body>
+</html>
