@@ -15,12 +15,15 @@ if (isset($_POST["acao"])) {
         $estado["contador"]++;
         $estado["piscar"] = false;  // Reseta a flag de piscar
     } elseif ($acao === 2) {  // Decrementar
-        if ($estado ["contador"] >= 0) {
+        if ($estado ["contador"] > 0) {
             $estado["contador"]--;
             $estado["piscar"] = false;  // Reseta a flag de piscar
         }
-    } elseif ($acao === 3) {  // Piscar
+    } elseif ($acao === 3) {  // Repetir
         $estado["piscar"] = true;
+    } elseif ($acao === 4) {  // Resetar fila
+        $estado["contador"] = 0;  
+        $estado["piscar"] = false; // Reseta a flag de piscar
     }
 
     // Salva o estado em um arquivo temporário

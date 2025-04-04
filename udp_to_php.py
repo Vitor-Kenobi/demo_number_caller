@@ -18,6 +18,7 @@ while True:
     # Recebe a mensagem
     data, addr = sock.recvfrom(1024)
     mensagem = data.decode().strip()
+    # Filtra o IP do equipamento e mensagens com menos de 30 caracteres para evitar redundâncias 
     if (addr[0] == "192.168.0.101" and len(mensagem) < 30):
         print(f"Mensagem recebida: {mensagem} de {addr}")
 
